@@ -1,3 +1,3 @@
 <template>
-  <router-view />
+  <h1>ContactPage</h1>
 </template>
