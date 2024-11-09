@@ -2,6 +2,7 @@ import { RouteRecordRaw } from 'vue-router';
 import ContactPage from '../views/pages/ContactPage.vue';
 import ErrorNotFound from '../views/pages/ErrorNotFound.vue';
 import IndexPage from '../views/pages/IndexPage.vue';
+import LoginPage from '../views/pages/LoginPage.vue';
 import MainLayout from '../views/layouts/MainLayout.vue';
 
 const routes: RouteRecordRaw[] = [
@@ -20,6 +21,11 @@ const routes: RouteRecordRaw[] = [
         component: ContactPage,
       },
     ],
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: LoginPage,
   },
 
   // Always leave this as last one,

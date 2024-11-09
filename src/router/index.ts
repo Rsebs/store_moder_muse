@@ -6,4 +6,21 @@ const router = createRouter({
   routes,
 });
 
+router.beforeEach((to, _from, next) => {
+  const isLogged = !!sessionStorage.getItem('token');
+
+  switch (to.name) {
+    case 'login':
+      next();
+      break;
+    default:
+      if (isLogged) {
+        next();
+      } else {
+        next({ name: 'login' });
+      }
+      break;
+  }
+});
+
 export default router;

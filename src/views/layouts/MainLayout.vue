@@ -16,6 +16,8 @@
           :to="{ name: 'index' }"
           flat
         />
+
+        <q-btn label="Logout" :ripple="false" flat @click="onLogout" />
       </q-toolbar>
     </q-header>
 
@@ -43,10 +45,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import MenuComponent from '../components/MenuComponent.vue';
 import { MenuComponentItems } from '../../interfaces/componentsProps';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import MenuComponent from '../components/MenuComponent.vue';
 
+const router = useRouter();
 const drawer = ref(false);
 const miniState = ref(true);
 const items: MenuComponentItems[] = [
@@ -61,4 +65,9 @@ const items: MenuComponentItems[] = [
     nameRoute: 'contact',
   },
 ];
+
+const onLogout = () => {
+  sessionStorage.removeItem('token');
+  router.push({ name: 'login' });
+};
 </script>
