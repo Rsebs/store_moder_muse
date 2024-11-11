@@ -6,68 +6,20 @@
           <h2 v-text="isFormLogin ? 'Login' : 'Signup'" class="login__title" />
         </q-card-section>
         <q-card-section class="column q-gutter-xl">
-          <q-input
-            v-if="!isFormLogin"
-            v-model="name"
-            label="Name"
-            color="grey-4"
-            label-color="grey-4"
-            dark
-            outlined
-            rounded
-          >
-            <template v-slot:append>
-              <q-icon name="bi-person-fill" color="grey-4" />
-            </template>
-          </q-input>
-
-          <q-input
-            v-model="email"
-            color="grey-4"
-            label-color="grey-4"
-            label="Email"
-            type="email"
-            dark
-            outlined
-            rounded
-          >
-            <template v-slot:append>
-              <q-icon name="bi-envelope-at-fill" color="grey-4" />
-            </template>
-          </q-input>
-
-          <q-input
-            v-model="password"
-            autocomplete="on"
-            color="grey-4"
-            label-color="grey-4"
-            label="Password"
-            type="password"
-            dark
-            outlined
-            rounded
-          >
-            <template v-slot:append>
-              <q-icon name="bi-lock-fill" color="grey-4" />
-            </template>
-          </q-input>
-
-          <q-input
-            v-if="!isFormLogin"
-            v-model="confirmPassword"
-            autocomplete="on"
-            color="grey-4"
-            label-color="grey-4"
-            label="Confirm Password"
-            type="password"
-            dark
-            outlined
-            rounded
-          >
-            <template v-slot:append>
-              <q-icon name="bi-lock-fill" color="grey-4" />
-            </template>
-          </q-input>
+          <template v-for="input in inputs" :key="input.key">
+            <component
+              v-if="input.showInput"
+              :is="MorphInputs[input.nameComponent]"
+              v-model="body[input.key]"
+              :label="input.label"
+              :dark="input.dark"
+              :iconAppend="input.iconAppend"
+              :type="input.type"
+              :color="input.color"
+              :outlined="input.outlined"
+              :rounded="input.rounded"
+            />
+          </template>
         </q-card-section>
         <q-card-section>
           <div class="login__bottom column q-gutter-lg">
@@ -124,34 +76,74 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { InputComponent } from '../../interfaces/componentsProps';
+import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import AxiosService from '../../services/axiosService';
+import MorphInputs from '../components/Inputs';
 
 const router = useRouter();
 
-const name = ref('');
-const email = ref('');
-const password = ref('');
-const confirmPassword = ref('');
+const body: Record<string, string> = reactive({});
 const loading = ref(false);
 const rememberMe = ref(false);
 const isFormLogin = ref(true);
+
+const inputs: (InputComponent & Record<string, unknown>)[] = reactive([
+  {
+    nameComponent: 'InputText',
+    key: 'name',
+    label: 'Name',
+    color: 'grey-4',
+    labelColor: 'grey-4',
+    iconAppend: 'bi-person-fill',
+    dark: true,
+    outlined: true,
+    rounded: true,
+    showInput: false,
+  },
+  {
+    nameComponent: 'InputText',
+    key: 'email',
+    color: 'grey-4',
+    dark: true,
+    iconAppend: 'bi-envelope-at-fill',
+    label: 'Email',
+    outlined: true,
+    rounded: true,
+    type: 'email',
+    showInput: true,
+  },
+  {
+    nameComponent: 'InputText',
+    key: 'password',
+    color: 'grey-4',
+    dark: true,
+    iconAppend: 'bi-lock-fill',
+    label: 'Password',
+    outlined: true,
+    rounded: true,
+    type: 'password',
+    showInput: true,
+  },
+  {
+    nameComponent: 'InputText',
+    key: 'passwordConfirm',
+    color: 'grey-4',
+    dark: true,
+    iconAppend: 'bi-lock-fill',
+    label: 'Confirm Password',
+    outlined: true,
+    rounded: true,
+    type: 'password',
+    showInput: false,
+  },
+]);
 
 const onSubmit = async () => {
   try {
     loading.value = true;
     const endpoint = isFormLogin.value ? 'login' : 'signup';
-
-    const body: Record<string, unknown> = {
-      email: email.value,
-      password: password.value,
-    };
-
-    if (!isFormLogin.value) {
-      body.name = name.value;
-      body.confirmPassword = confirmPassword.value;
-    }
 
     const { data } = await AxiosService.post(endpoint, body);
 
@@ -166,6 +158,10 @@ const onSubmit = async () => {
 
 const onChangeForm = () => {
   isFormLogin.value = !isFormLogin.value;
+  inputs.forEach((input) => {
+    if (input.model === 'name' || input.model === 'passwordConfirm')
+      input.showInput = !isFormLogin.value;
+  });
 };
 </script>
 
