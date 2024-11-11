@@ -159,7 +159,7 @@ const onSubmit = async () => {
 const onChangeForm = () => {
   isFormLogin.value = !isFormLogin.value;
   inputs.forEach((input) => {
-    if (input.model === 'name' || input.model === 'passwordConfirm')
+    if (input.key === 'name' || input.key === 'passwordConfirm')
       input.showInput = !isFormLogin.value;
   });
 };
@@ -193,7 +193,7 @@ const onChangeForm = () => {
     transition-duration: 0.3s;
 
     &:hover {
-      color: darken($color: qv.$primary, $amount: 0%);
+      color: qv.$primary;
     }
   }
 }
