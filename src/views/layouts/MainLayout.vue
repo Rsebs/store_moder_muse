@@ -64,6 +64,11 @@ const items: MenuComponentItems[] = [
     icon: 'bi-person-lines-fill',
     nameRoute: 'contact',
   },
+  {
+    label: 'Productos',
+    icon: 'bi-tags-fill',
+    nameRoute: 'products',
+  },
 ];
 
 const onLogout = () => {

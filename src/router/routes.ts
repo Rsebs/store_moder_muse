@@ -4,6 +4,7 @@ import ErrorNotFound from '../views/pages/ErrorNotFound.vue';
 import IndexPage from '../views/pages/IndexPage.vue';
 import LoginPage from '../views/pages/LoginPage.vue';
 import MainLayout from '../views/layouts/MainLayout.vue';
+import ProductsPage from '../views/pages/ProductsPage.vue';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -19,6 +20,11 @@ const routes: RouteRecordRaw[] = [
         path: '/contact',
         name: 'contact',
         component: ContactPage,
+      },
+      {
+        path: '/products',
+        name: 'products',
+        component: ProductsPage,
       },
     ],
   },

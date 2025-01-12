@@ -1,4 +1,5 @@
 import axios, { AxiosError } from 'axios';
+import { SessionStorage } from 'quasar';
 
 export default class AxiosService {
   static axiosInstance = axios.create({
@@ -16,6 +17,9 @@ export default class AxiosService {
       const response = await this.axiosInstance.get(url, {
         params: {
           ...params,
+        },
+        headers: {
+          Authorization: `Bearer ${SessionStorage.getItem('token')}`,
         },
       });
       return response.data;
