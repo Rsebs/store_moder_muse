@@ -1,7 +1,7 @@
 <template>
-  <TableApi endpoint="products" title="Productos" />
+  <CrudComponent endpoint="products" />
 </template>
 
 <script setup lang="ts">
-import TableApi from '../components/Tables/TableApi.vue';
+import CrudComponent from '../components/CrudComponent.vue';
 </script>

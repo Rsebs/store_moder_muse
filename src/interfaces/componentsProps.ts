@@ -51,3 +51,8 @@ export interface ColumnsTable {
   headerStyle?: string;
   headerClasses?: string;
 }
+
+export interface ActionButtonTable {
+  icon: string;
+  color: string;
+}

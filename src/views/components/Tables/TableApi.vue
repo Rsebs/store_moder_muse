@@ -1,11 +1,25 @@
 <template>
-  <q-table :columns :loading :rows :title bordered flat separator="cell" />
+  <q-table
+    :columns
+    :loading
+    :rows
+    :title
+    bordered
+    flat
+    separator="cell"
+    :selection="selection.type"
+    v-model:selected="selected"
+  >
+    <template v-if="$slots.top" #top>
+      <slot name="top"> </slot>
+    </template>
+  </q-table>
 </template>
 
 <script setup lang="ts">
 import { ColumnsTable } from '../../../interfaces/componentsProps';
 import { InterfaceAxios } from '../../../interfaces/InterfaceAxios';
-import { onMounted, Reactive, reactive, ref } from 'vue';
+import { onMounted, Reactive, reactive, ref, watch } from 'vue';
 import AxiosService from '../../../services/axiosService';
 
 const { endpoint } = defineProps({
@@ -18,8 +32,16 @@ const { endpoint } = defineProps({
     required: false,
     default: '',
   },
+  selection: {
+    type: Object as () => {
+      type: 'none' | 'single' | 'multiple' | undefined;
+    },
+    required: false,
+    default: { type: 'none' },
+  },
 });
 
+const emit = defineEmits(['getSelected']);
 onMounted(() => {
   fetchData();
 });
@@ -32,6 +54,7 @@ const data: InterfaceAxios = reactive({
 const columns: ColumnsTable[] = reactive([]);
 let rows: Reactive<Record<string, unknown>[]> = reactive([]);
 const loading = ref(false);
+const selected = ref([]);
 
 const fetchData = async () => {
   try {
@@ -62,4 +85,15 @@ const formatTable = (dataTable: Record<string, unknown>[]) => {
   });
   rows = dataTable;
 };
+
+watch(
+  () => selected,
+  (newValue) => {
+    emit(
+      'getSelected',
+      newValue.value.map((val: Record<string, unknown>) => val.id)
+    );
+  },
+  { deep: true }
+);
 </script>
