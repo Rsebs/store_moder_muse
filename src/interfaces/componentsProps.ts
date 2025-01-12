@@ -33,3 +33,21 @@ export interface InputComponent {
   color?: string;
   labelColor?: string;
 }
+
+// Table
+export interface ColumnsTable {
+  name: string;
+  label: string;
+  field: string | ((row: any) => any);
+  required?: boolean;
+  align?: 'left' | 'center' | 'right';
+  sortable?: boolean;
+  sort?: (a: any, b: any, rowA: any, rowB: any) => number;
+  rawSort?: (a: any, b: any, rowA: any, rowB: any) => number;
+  sortOrder?: 'ad' | 'da';
+  format?: (val: any, row: any) => string;
+  style?: string | ((row: any) => string) | undefined;
+  classes?: string | ((row: any) => string) | undefined;
+  headerStyle?: string;
+  headerClasses?: string;
+}
